@@ -1,0 +1,82 @@
+<html><head></head><body><h1>Putting it all together</h1>
+
+<p>In this final step you will put everything together into a usable
+Sudoku solver.</p>
+
+<p>Start by copying your solver code over from the previous project.
+The only code you will be writing for this step will be in
+<code>start.s</code>, and it should do the following:</p>
+
+<ul>
+<li>Print a prompt asking the user to type in a Sudoku puzzle</li>
+<li>Read the board from standard in</li>
+<li>Parse the board (using <code>read_board</code>) and verify that it was well
+formed</li>
+<li>Solve the puzzle (using <code>solve</code>) and verify that it succeeded</li>
+<li>Print the solved puzzle (using <code>print_board</code>)</li>
+</ul>
+
+<p>At each step, errors are handled by printing a specific message to
+standard out and exiting. Here is an example session:</p>
+
+<pre><code>$ ./a.out
+Please type in a Sudoku puzzle to solve:
+&gt; ..9.5.3.1.2..63......7....4.8.1...5......5.....7.3....7......1.8.........53...29.
++-------+-------+-------+
+| 4 7 9 | 2 5 8 | 3 6 1 |
+| 1 2 5 | 4 6 3 | 7 8 9 |
+| 3 6 8 | 7 1 9 | 5 2 4 |
++-------+-------+-------+
+| 2 8 6 | 1 7 4 | 9 5 3 |
+| 9 3 4 | 6 8 5 | 1 7 2 |
+| 5 1 7 | 9 3 2 | 6 4 8 |
++-------+-------+-------+
+| 7 4 2 | 3 9 6 | 8 1 5 |
+| 8 9 1 | 5 2 7 | 4 3 6 |
+| 6 5 3 | 8 4 1 | 2 9 7 |
++-------+-------+-------+
+</code></pre>
+
+<p>Note that your output must exactly match the example. For error
+messages, you can see the expected output by running the tests and
+copying the text from the failed test.</p>
+
+<p>All of this can be written directly in <code>_start</code>, or you can write
+helper functions as needed. All of your code should be in <code>start.s</code>.</p>
+
+<p>To read a line of input, you should do the following:</p>
+
+<ul>
+<li><p>Reserve some space in the <code>.bss</code> section using a <code>.space</code>
+directive. For example:</p>
+
+<pre><code>input:  .space 128
+</code></pre></li>
+
+<li><p>Perform a read system call, reserving one of the bytes so you
+can add a zero at the end of the input string. In this example,
+you would tell read that your buffer is 127 bytes long.</p></li>
+
+<li><p>After reading the read system call there are 3 cases:</p>
+
+<ol>
+<li><p>The system call returns an error. Handle this by exiting
+with a non-zero exit status code.</p></li>
+
+<li><p>The read call was successful, at least one byte was read,
+and the last byte that was read was a newline. In this case,
+overwrite the trailing newline with a zero so the string
+ends without a newline.</p></li>
+
+<li><p>The read call was successful, but zero bytes were read or
+the last byte was a not a newline. Add a zero byte to the
+end of the input in this case.</p></li>
+</ol></li>
+</ul>
+
+<p>Recall that your <code>read_board</code> function validates the input,
+returning different values for a board that is too short, too long,
+contains invalid characters, or is correct. Print the appropriate
+message for each of the error cases (and exit with status code
+zero), and for a valid board proceed to call solve on the result.</p>
+</body></html>
